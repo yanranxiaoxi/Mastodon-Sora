@@ -11,8 +11,10 @@ stages:
 docker-build:
   stage: build
   tags:
-    - linuxamd64docker-mpc
-    - linuxamd64docker-hpc
+    - linux
+    - amd64
+    - docker
+    - mpc
   image: docker.io/library/docker:cli
   services:
     - name: docker.io/library/docker:dind
