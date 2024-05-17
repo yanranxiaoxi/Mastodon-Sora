@@ -1,6 +1,6 @@
 FROM docker.io/tootsuite/mastodon:v4.2.8
 
-ENV GITHUB_REPOSITORY yanranxiaoxi/mastodon-sora
+ENV GITHUB_REPOSITORY yanranxiaoxi/Mastodon-Sora
 ENV MASTODON_VERSION_METADATA sora
 
 # COPY --chown=991:991 ./icons /opt/mastodon/app/javascript/icons
