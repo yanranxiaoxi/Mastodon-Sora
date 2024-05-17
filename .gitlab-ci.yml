@@ -1,0 +1,32 @@
+# https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#docker-in-docker-with-tls-disabled-in-the-docker-executor
+# https://docs.gitlab.com/ee/ci/services/#accessing-the-services
+
+stages:
+  - build
+
+#########################
+#         Build         #
+#########################
+
+docker-build:
+  stage: build
+  tags:
+    - linuxamd64docker-mpc
+    - linuxamd64docker-hpc
+  image: docker:cli
+  services:
+    - name: docker:dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    CONTAINER_IMAGE_NAME: $CONTAINER_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  rules:
+  - if: $CI_COMMIT_TAG
+  before_script:
+    - docker login -u "$CONTAINER_REGISTRY_USER" -p "$CONTAINER_REGISTRY_PASSWORD" $CONTAINER_REGISTRY
+  script:
+    - docker build --pull -t "$CONTAINER_IMAGE_NAME" .
+    - docker push "$CONTAINER_IMAGE_NAME"
+    - docker tag "$CONTAINER_IMAGE_NAME" "$CONTAINER_REGISTRY_IMAGE:stable"
+    - docker push "$CONTAINER_REGISTRY_IMAGE:stable"
