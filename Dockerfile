@@ -20,6 +20,5 @@ RUN echo "修改字数上限" && \
 	echo "修改版本输出样式" && \
 	sed -i "/to_s/,/repository/{s|+|~|}" /opt/mastodon/lib/mastodon/version.rb && \
 	echo "重新编译资源文件" && \
-	# npx update-browserslist-db@latest && \
 	OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile && \
 	yarn cache clean
