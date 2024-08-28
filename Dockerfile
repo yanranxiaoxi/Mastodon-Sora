@@ -1,4 +1,4 @@
-FROM docker.io/tootsuite/mastodon:v4.2.10
+FROM docker.io/tootsuite/mastodon:v4.2.12
 
 ENV GITHUB_REPOSITORY yanranxiaoxi/Mastodon-Sora
 ENV MASTODON_VERSION_METADATA sora
