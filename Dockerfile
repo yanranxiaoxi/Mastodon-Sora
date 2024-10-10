@@ -1,10 +1,10 @@
 FROM docker.io/tootsuite/mastodon:v4.3.0
 
-ENV GITHUB_REPOSITORY yanranxiaoxi/Mastodon-Sora
-ENV MASTODON_VERSION_METADATA sora
+ENV GITHUB_REPOSITORY=yanranxiaoxi/Mastodon-Sora
+ENV MASTODON_VERSION_METADATA=sora
 
 # COPY --chown=991:991 ./icons /opt/mastodon/app/javascript/icons
-# COPY --chown=991:991 ./images /opt/mastodon/app/javascript/images
+COPY --chown=991:991 ./images /opt/mastodon/app/javascript/images
 
 RUN echo "修改媒体上限" && \
 	sed -i "s|pixels: 8_294_400|pixels: 33_177_600|" /opt/mastodon/app/models/media_attachment.rb && \
