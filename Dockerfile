@@ -4,13 +4,9 @@ ENV GITHUB_REPOSITORY=yanranxiaoxi/Mastodon-Sora
 ENV MASTODON_VERSION_METADATA=sora
 
 # COPY --chown=991:991 ./icons /opt/mastodon/app/javascript/icons
-COPY --chown=991:991 ./images /opt/mastodon/app/javascript/images
+# COPY --chown=991:991 ./images /opt/mastodon/app/javascript/images
 
-RUN echo "修改媒体上限" && \
-	sed -i "s|pixels: 8_294_400|pixels: 33_177_600|" /opt/mastodon/app/models/media_attachment.rb && \
-	sed -i "s|IMAGE_LIMIT = 16|IMAGE_LIMIT = 32|" /opt/mastodon/app/models/media_attachment.rb && \
-	sed -i "s|VIDEO_LIMIT = 99|VIDEO_LIMIT = 100|" /opt/mastodon/app/models/media_attachment.rb && \
-	echo "全文搜索中文优化" && \
+RUN echo "全文搜索中文优化" && \
 	sed -i "/verbatim/,/}/{s|standard|ik_max_word|}" /opt/mastodon/app/chewy/accounts_index.rb && \
 	sed -i "s|analyzer: {|char_filter: {\n      tsconvert: {\n        type: 'stconvert',\n        keep_both: false,\n        delimiter: '#',\n        convert_type: 't2s',\n      },\n    },\n\n    analyzer: {|" /opt/mastodon/app/chewy/{statuses_index,public_statuses_index,tags_index}.rb && \
 	sed -i "/content/,/}/{s|standard'|ik_max_word',\n        char_filter: %w(tsconvert)|}" /opt/mastodon/app/chewy/{statuses_index,public_statuses_index}.rb && \
