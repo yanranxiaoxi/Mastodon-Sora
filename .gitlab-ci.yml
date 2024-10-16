@@ -23,7 +23,7 @@ replace:
     - unzip -d ./mastodon ./mastodon.zip
     - mv ./mastodon/mastodon-*/* ./mastodon/mastodon-*/.[^.]* ./mastodon/
     - rmdir ./mastodon/mastodon-*/
-    - cp ./src/* ./mastodon/
+    - cp -r ./src/* ./mastodon/
   artifacts:
     paths:
       - ./mastodon/
