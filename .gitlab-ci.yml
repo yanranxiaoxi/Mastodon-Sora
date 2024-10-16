@@ -2,7 +2,31 @@
 # https://docs.gitlab.com/ee/ci/services/#accessing-the-services
 
 stages:
+  - replace
   - build
+
+#########################
+#        Replace        #
+#########################
+
+replace:
+  stage: replace
+  tags:
+    - linux
+    - docker
+  image: docker.io/library/almalinux:9-minimal
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - dnf install -y wget unzip
+    - wget -O ./mastodon.zip https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.0.zip
+    - unzip -d ./mastodon ./mastodon.zip
+    - mv ./mastodon/mastodon-*/* ./mastodon/mastodon-*/.[^.]* ./mastodon/
+    - rmdir ./mastodon/mastodon-*/
+    - cp ./src/* ./mastodon/
+  artifacts:
+    paths:
+      - ./mastodon/
 
 #########################
 #         Build         #
@@ -12,9 +36,8 @@ docker-build:
   stage: build
   tags:
     - linux
-    - amd64
     - docker
-    - mpc
+    - hpc
   image: docker.io/library/docker:cli
   services:
     - name: docker.io/library/docker:dind
@@ -23,12 +46,14 @@ docker-build:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
     CONTAINER_IMAGE_NAME: $CONTAINER_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    TARGETPLATFORM: linux/amd64,linux/arm64
+    BUILDPLATFORM: linux/arm64
   rules:
   - if: $CI_COMMIT_TAG
   before_script:
     - docker login -u "$CONTAINER_REGISTRY_USER" -p "$CONTAINER_REGISTRY_PASSWORD" $CONTAINER_REGISTRY
   script:
-    - docker build --pull -t "$CONTAINER_IMAGE_NAME" .
+    - docker build --pull -t "$CONTAINER_IMAGE_NAME" ./mastodon/
     - docker push "$CONTAINER_IMAGE_NAME"
     - docker tag "$CONTAINER_IMAGE_NAME" "$CONTAINER_REGISTRY_IMAGE:stable"
     - docker push "$CONTAINER_REGISTRY_IMAGE:stable"
