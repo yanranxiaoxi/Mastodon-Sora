@@ -37,6 +37,7 @@ docker-build:
   tags:
     - linux
     - docker
+    - amd64
     - hpc
   image: docker.io/library/docker:cli
   services:
@@ -46,8 +47,8 @@ docker-build:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
     CONTAINER_IMAGE_NAME: $CONTAINER_REGISTRY_IMAGE:$CI_COMMIT_TAG
-    TARGETPLATFORM: linux/amd64,linux/arm64
-    BUILDPLATFORM: linux/arm64
+    TARGETPLATFORM: linux/amd64
+    BUILDPLATFORM: linux/amd64
   rules:
   - if: $CI_COMMIT_TAG
   before_script:
