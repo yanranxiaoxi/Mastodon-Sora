@@ -19,7 +19,7 @@ replace:
     - if: $CI_COMMIT_TAG
   script:
     - dnf install -y wget unzip
-    - wget -O ./mastodon.zip https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.2.zip
+    - wget -O ./mastodon.zip https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.6.zip
     - unzip -d ./mastodon ./mastodon.zip
     - rm -f ./mastodon.zip
     - mv ./mastodon/mastodon-*/* ./mastodon/mastodon-*/.[^.]* ./mastodon/
