@@ -52,6 +52,7 @@ docker-build:
     BUILDPLATFORM: linux/amd64
     GITHUB_REPOSITORY: yanranxiaoxi/mastodon-sora
     MASTODON_VERSION_METADATA: sora
+    IMAGE_NAME: mastodon-sora
   rules:
   - if: $CI_COMMIT_TAG
   before_script:
