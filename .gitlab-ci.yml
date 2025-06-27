@@ -48,6 +48,7 @@ docker-build:
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
+    CONTAINER_IMAGE_NAME: mastodon-sora
     TARGETPLATFORM: linux/amd64
     BUILDPLATFORM: linux/amd64
     GITHUB_REPOSITORY: yanranxiaoxi/mastodon-sora
@@ -60,17 +61,17 @@ docker-build:
   script:
     # 解包并构建
     - tar -zxvf ./mastodon.tar.gz
-    - docker build --pull -t "mastodon-sora:$CI_COMMIT_TAG" ./mastodon/
-    - docker tag mastodon-sora:$CI_COMMIT_TAG mastodon-sora:stable
+    - docker build --pull -t "$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG" ./mastodon/
+    - docker tag $CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG $CONTAINER_IMAGE_NAME:stable
     # 为 Docker Hub 打远程仓库标签
-    - docker tag mastodon-sora:$CI_COMMIT_TAG docker.io/$DOCKERHUB_USER/mastodon-sora:$CI_COMMIT_TAG
-    - docker tag mastodon-sora:stable docker.io/$DOCKERHUB_USER/mastodon-sora:stable
+    - docker tag $CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG docker.io/$DOCKERHUB_USER/$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG
+    - docker tag $CONTAINER_IMAGE_NAME:stable docker.io/$DOCKERHUB_USER/$CONTAINER_IMAGE_NAME:stable
     # 为私有仓库打远程仓库标签
-    - docker tag mastodon-sora:$CI_COMMIT_TAG $CI_REGISTRY/xiaoxi/mastodon-sora:$CI_COMMIT_TAG
-    - docker tag mastodon-sora:stable $CI_REGISTRY/xiaoxi/mastodon-sora:stable
+    - docker tag $CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG $CI_REGISTRY/xiaoxi/$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG
+    - docker tag $CONTAINER_IMAGE_NAME:stable $CI_REGISTRY/xiaoxi/$CONTAINER_IMAGE_NAME:stable
     # 推送 Docker Hub
-    - docker push docker.io/$DOCKERHUB_USER/mastodon-sora:$CI_COMMIT_TAG
-    - docker push docker.io/$DOCKERHUB_USER/mastodon-sora:stable
+    - docker push docker.io/$DOCKERHUB_USER/$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG
+    - docker push docker.io/$DOCKERHUB_USER/$CONTAINER_IMAGE_NAME:stable
     # 推送私有仓库
-    - docker push $CI_REGISTRY/xiaoxi/mastodon-sora:$CI_COMMIT_TAG
-    - docker push $CI_REGISTRY/xiaoxi/mastodon-sora:stable
+    - docker push $CI_REGISTRY/xiaoxi/$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG
+    - docker push $CI_REGISTRY/xiaoxi/$CONTAINER_IMAGE_NAME:stable
