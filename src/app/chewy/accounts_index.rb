@@ -44,7 +44,7 @@ class AccountsIndex < Chewy::Index
 
       # "FOO bar" becomes "foo bar"
       verbatim: {
-        tokenizer: 'ik_max_word',
+        tokenizer: 'standard',
         filter: %w(lowercase asciifolding cjk_width),
       },
 

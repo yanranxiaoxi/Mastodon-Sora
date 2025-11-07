@@ -40,7 +40,7 @@ class MediaAttachment < ApplicationRecord
   MAX_DESCRIPTION_LENGTH = 1_500
 
   IMAGE_LIMIT = 32.megabytes
-  VIDEO_LIMIT = 100.megabytes
+  VIDEO_LIMIT = 99.megabytes
 
   MAX_VIDEO_MATRIX_LIMIT = 8_294_400 # 3840x2160px
   MAX_VIDEO_FRAME_RATE   = 120
@@ -296,6 +296,10 @@ class MediaAttachment < ApplicationRecord
 
     def supported_file_extensions
       IMAGE_FILE_EXTENSIONS + VIDEO_FILE_EXTENSIONS + AUDIO_FILE_EXTENSIONS
+    end
+
+    def combined_media_file_size
+      arel_table.coalesce(arel_table[:file_file_size], 0) + arel_table.coalesce(arel_table[:thumbnail_file_size], 0)
     end
 
     private
