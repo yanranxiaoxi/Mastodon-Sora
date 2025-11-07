@@ -32,6 +32,7 @@ class TagsIndex < Chewy::Index
           asciifolding
           cjk_width
         ),
+        char_filter: %w(tsconvert),
       },
     },
 
@@ -51,7 +52,7 @@ class TagsIndex < Chewy::Index
   end
 
   root date_detection: false do
-    field(:name, type: 'text', analyzer: 'content', value: :display_name) { field(:edge_ngram, type: 'text', analyzer: 'edge_ngram', search_analyzer: 'content') }
+    field(:name, type: 'text', analyzer: 'content', value: :display_name) { field(:edge_ngram, type: 'text', analyzer: 'edge_ngram', search_analyzer: 'edge_ngram') }
     field(:reviewed, type: 'boolean', value: ->(tag) { tag.reviewed? })
     field(:usage, type: 'long', value: ->(tag, crutches) { tag.history.aggregate(crutches.time_period).accounts })
     field(:last_status_at, type: 'date', value: ->(tag) { clamp_date(tag.last_status_at || tag.created_at) })
