@@ -14,12 +14,12 @@ replace:
   tags:
     - linux
     - docker
-  image: docker.io/library/almalinux:9
+  image: docker.io/library/almalinux:10
   rules:
     - if: $CI_COMMIT_TAG
   script:
     - dnf install -y wget unzip
-    - wget -O ./mastodon.zip https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.8.zip
+    - wget -O ./mastodon.zip https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0.zip
     - unzip -d ./mastodon ./mastodon.zip
     - rm -f ./mastodon.zip
     - mv ./mastodon/mastodon-*/* ./mastodon/mastodon-*/.[^.]* ./mastodon/
