@@ -61,7 +61,7 @@ docker-build:
   script:
     # 解包并构建
     - tar -zxvf ./mastodon.tar.gz
-    - docker build --pull -t "$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG" ./mastodon/
+    - docker build --pull --provenance=false -t "$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG" ./mastodon/
     - docker tag $CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG $CONTAINER_IMAGE_NAME:stable
     # 为 Docker Hub 打远程仓库标签
     - docker tag $CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG docker.io/$DOCKERHUB_USER/$CONTAINER_IMAGE_NAME:$CI_COMMIT_TAG
