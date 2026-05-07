@@ -13,7 +13,7 @@ module Mastodon
     end
 
     def patch
-      2
+      9
     end
 
     def default_prerelease
@@ -57,7 +57,7 @@ module Mastodon
 
     def source_base_url
       source_configuration[:base_url] || "https://github.com/#{repository}"
-    end
+    ends
 
     # specify git tag or commit hash here
     def source_tag
