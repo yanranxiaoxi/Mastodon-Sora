@@ -57,7 +57,7 @@ module Mastodon
 
     def source_base_url
       source_configuration[:base_url] || "https://github.com/#{repository}"
-    ends
+    end
 
     # specify git tag or commit hash here
     def source_tag
